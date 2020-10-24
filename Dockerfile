@@ -1,3 +1,10 @@
-FROM golang:onbuild
+FROM golang:alpine as builder
+WORKDIR /build
+ADD server.go /build/
+RUN go build server.go
 
-EXPOSE 8080
+FROM alpine
+WORKDIR /app
+COPY --from=builder /build/server /app/
+
+CMD ["./server"]
