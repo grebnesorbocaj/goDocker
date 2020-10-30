@@ -5,11 +5,14 @@ import (
     "log"
     "net/http"
     "io/ioutil"
+    "os"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-    // fmt.Println("Send reqeust to nodeDocker container at route -> http://nodeDocker:3000")
-    resp, err := http.Get("http://nodedocker:3000/")
+    host := os.Getenv("HOST")
+    targetUrl := "http://" + host + ":3000"
+    fmt.Printf("Send reqeust to nodeDocker container at route -> %s", targetUrl)
+    resp, err := http.Get(targetUrl)
     if err != nil {
 	fmt.Fprintf(w, "error! error! error!: %s", err)
         return 
